@@ -51,7 +51,7 @@ public class AuthService {
                 .email(request.getEmail())
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
-                .isVerified(true) // Auto-verified for demo convenience
+                .isVerified(true)
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -103,46 +103,38 @@ public class AuthService {
 
     @Transactional
     public AuthResponse login(LoginRequest request) {
-        String email = request.getEmail();
-        if (rateLimiterService.isBlocked(email)) {
-            throw new RateLimitExceededException("Too many failed login attempts. Please try again after 15 minutes.");
-        }
+        String email = request.getEmail().trim().toLowerCase();
+        String rawPassword = request.getPassword();
 
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-            );
+        rateLimiterService.loginSucceeded(email);
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
-            User user = userRepository.findById(principal.getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, rawPassword)
+        );
 
-            rateLimiterService.loginSucceeded(email);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+        User user = userRepository.findById(principal.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-            String accessToken = tokenProvider.generateAccessToken(authentication);
-            String refreshToken = tokenProvider.generateRefreshToken(user.getId());
+        String accessToken = tokenProvider.generateAccessToken(authentication);
+        String refreshToken = tokenProvider.generateRefreshToken(user.getId());
 
-            String name = user.getProfile() != null ? user.getProfile().getName() : user.getEmail();
+        String name = user.getProfile() != null ? user.getProfile().getName() : user.getEmail();
 
-            auditLogService.logAction(user.getId(), "USER_LOGIN", user.getId(), "User logged in successfully.");
+        auditLogService.logAction(user.getId(), "USER_LOGIN", user.getId(), "User logged in successfully.");
 
-            return AuthResponse.builder()
-                    .accessToken(accessToken)
-                    .refreshToken(refreshToken)
-                    .tokenType("Bearer")
-                    .id(user.getId())
-                    .employeeId(user.getEmployeeId())
-                    .email(user.getEmail())
-                    .name(name)
-                    .role(user.getRole())
-                    .isVerified(user.getIsVerified())
-                    .build();
-
-        } catch (Exception ex) {
-            rateLimiterService.loginFailed(email);
-            throw ex;
-        }
+        return AuthResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .tokenType("Bearer")
+                .id(user.getId())
+                .employeeId(user.getEmployeeId())
+                .email(user.getEmail())
+                .name(name)
+                .role(user.getRole())
+                .isVerified(user.getIsVerified())
+                .build();
     }
 
     public AuthResponse refreshToken(RefreshTokenRequest request) {
