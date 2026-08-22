@@ -1,0 +1,386 @@
+{
+	"info": {
+		"_postman_id": "dayflow-hrms-api-collection",
+		"name": "Dayflow HRMS API Collection",
+		"description": "Complete REST API collection for Dayflow HRMS Hackathon project including Auth, Employee Profiles, Attendance, Leaves, Payroll, and HR Admin endpoints.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refreshToken",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "HR Admin Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@dayflow.com\",\n  \"password\": \"Admin@1234\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Employee Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"emp1@dayflow.com\",\n  \"password\": \"User@1234\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Sign Up New Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"employeeId\": \"EMP007\",\n  \"email\": \"newemp@dayflow.com\",\n  \"password\": \"User@1234\",\n  \"name\": \"Jonathan Davis\",\n  \"jobTitle\": \"Frontend Engineer\",\n  \"department\": \"Engineering\",\n  \"role\": \"EMPLOYEE\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/signup",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "signup"]
+						}
+					}
+				},
+				{
+					"name": "Refresh Token Flow",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/refresh",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "refresh"]
+						}
+					}
+				},
+				{
+					"name": "Get Current User Me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "me"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Employee Profile",
+			"item": [
+				{
+					"name": "Get Self Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/employees/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "employees", "me"]
+						}
+					}
+				},
+				{
+					"name": "Update Self Profile (Phone, Address)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phone\": \"+1 (555) 999-8877\",\n  \"address\": \"777 Innovation Way, Suite 400\",\n  \"profilePictureUrl\": \"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/employees/me/update",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "employees", "me", "update"]
+						}
+					}
+				},
+				{
+					"name": "Admin - Get All Employees",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/employees",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "employees"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Attendance",
+			"item": [
+				{
+					"name": "Check In",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/attendance/check-in",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "attendance", "check-in"]
+						}
+					}
+				},
+				{
+					"name": "Check Out",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/attendance/check-out",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "attendance", "check-out"]
+						}
+					}
+				},
+				{
+					"name": "Get My Weekly Attendance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/attendance/weekly",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "attendance", "weekly"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Leave Management",
+			"item": [
+				{
+					"name": "Apply for Leave",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"leaveType\": \"PAID\",\n  \"startDate\": \"2026-09-01\",\n  \"endDate\": \"2026-09-05\",\n  \"remarks\": \"Vacation trip\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/leaves/apply",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "leaves", "apply"]
+						}
+					}
+				},
+				{
+					"name": "Get Leave Balance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/leaves/balance",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "leaves", "balance"]
+						}
+					}
+				},
+				{
+					"name": "HR Admin - Review Leave Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"APPROVED\",\n  \"reviewerComments\": \"Have a great break!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/leaves/3/review",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "leaves", "3", "review"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "5. Payroll",
+			"item": [
+				{
+					"name": "Get My Payroll",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/payroll/my",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "payroll", "my"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "6. Admin & Audit Logs",
+			"item": [
+				{
+					"name": "Get Dashboard Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/dashboard-stats",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "dashboard-stats"]
+						}
+					}
+				},
+				{
+					"name": "Get Audit Trail Logs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/audit-logs",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "audit-logs"]
+						}
+					}
+				}
+			]
+		}
+	]
+}
