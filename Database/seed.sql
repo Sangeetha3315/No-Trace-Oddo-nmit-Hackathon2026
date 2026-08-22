@@ -12,12 +12,12 @@ TRUNCATE audit_log, payroll, leave_requests, attendance, employee_profiles, user
 -- Password for HR Admin (admin@dayflow.com): Admin@1234 -> $2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a
 -- Password for Employees (empX@dayflow.com): User@1234 -> $2a$10$e965.d1M./F7QO6kE6k3ueH.d/QzN88K7n4/0lVfJjH51G06L6mWi
 INSERT INTO users (employee_id, email, password_hash, role, is_verified, created_at) VALUES
-('EMP001', 'admin@dayflow.com', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a', 'HR', TRUE, CURRENT_TIMESTAMP - INTERVAL '180 days'),
-('EMP002', 'emp1@dayflow.com', '$2a$10$e965.d1M./F7QO6kE6k3ueH.d/QzN88K7n4/0lVfJjH51G06L6mWi', 'EMPLOYEE', TRUE, CURRENT_TIMESTAMP - INTERVAL '150 days'),
-('EMP003', 'emp2@dayflow.com', '$2a$10$e965.d1M./F7QO6kE6k3ueH.d/QzN88K7n4/0lVfJjH51G06L6mWi', 'EMPLOYEE', TRUE, CURRENT_TIMESTAMP - INTERVAL '120 days'),
-('EMP004', 'emp3@dayflow.com', '$2a$10$e965.d1M./F7QO6kE6k3ueH.d/QzN88K7n4/0lVfJjH51G06L6mWi', 'EMPLOYEE', TRUE, CURRENT_TIMESTAMP - INTERVAL '90 days'),
-('EMP005', 'emp4@dayflow.com', '$2a$10$e965.d1M./F7QO6kE6k3ueH.d/QzN88K7n4/0lVfJjH51G06L6mWi', 'EMPLOYEE', TRUE, CURRENT_TIMESTAMP - INTERVAL '60 days'),
-('EMP006', 'emp5@dayflow.com', '$2a$10$e965.d1M./F7QO6kE6k3ueH.d/QzN88K7n4/0lVfJjH51G06L6mWi', 'EMPLOYEE', TRUE, CURRENT_TIMESTAMP - INTERVAL '30 days');
+('EMP001', 'admin@dayflow.com', '$2b$10$GhAgcO.7EMJDfPsGGXPtKuu6.2jo/Kk/azsrrxPeoRlIKmcc492z.', 'HR', TRUE, CURRENT_TIMESTAMP - INTERVAL '180 days'),
+('EMP002', 'emp1@dayflow.com', '$2b$10$OzVzQI9pehdCqrzVSolMpuEUUEhrz23UVx3bVJ1C3eBzKETFf1no2', 'EMPLOYEE', TRUE, CURRENT_TIMESTAMP - INTERVAL '150 days'),
+('EMP003', 'emp2@dayflow.com', '$2b$10$OzVzQI9pehdCqrzVSolMpuEUUEhrz23UVx3bVJ1C3eBzKETFf1no2', 'EMPLOYEE', TRUE, CURRENT_TIMESTAMP - INTERVAL '120 days'),
+('EMP004', 'emp3@dayflow.com', '$2b$10$OzVzQI9pehdCqrzVSolMpuEUUEhrz23UVx3bVJ1C3eBzKETFf1no2', 'EMPLOYEE', TRUE, CURRENT_TIMESTAMP - INTERVAL '90 days'),
+('EMP005', 'emp4@dayflow.com', '$2b$10$OzVzQI9pehdCqrzVSolMpuEUUEhrz23UVx3bVJ1C3eBzKETFf1no2', 'EMPLOYEE', TRUE, CURRENT_TIMESTAMP - INTERVAL '60 days'),
+('EMP006', 'emp5@dayflow.com', '$2b$10$OzVzQI9pehdCqrzVSolMpuEUUEhrz23UVx3bVJ1C3eBzKETFf1no2', 'EMPLOYEE', TRUE, CURRENT_TIMESTAMP - INTERVAL '30 days');
 
 -- 2. SEED EMPLOYEE PROFILES
 INSERT INTO employee_profiles (user_id, name, phone, address, job_title, department, date_of_joining, profile_picture_url) VALUES
